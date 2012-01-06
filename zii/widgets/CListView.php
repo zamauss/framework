@@ -173,10 +173,7 @@ class CListView extends CBaseListView
 		if($this->itemView===null)
 			throw new CException(Yii::t('zii','The property "itemView" cannot be empty.'));
 		parent::init();
-
-		if(!isset($this->htmlOptions['class']))
-			$this->htmlOptions['class']='list-view';
-
+		
 		if($this->baseScriptUrl===null)
 			$this->baseScriptUrl=Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('zii.widgets.assets')).'/listview';
 
@@ -232,18 +229,16 @@ class CListView extends CBaseListView
 		$data=$this->dataProvider->getData();
 		if(($n=count($data))>0)
 		{
-			$owner=$this->getOwner();
-			$render=$owner instanceof CController ? 'renderPartial' : 'render';
+			$owner=$this->getOwner();			
+			$render=$owner instanceof CController ? 'renderPartial' : 'render';			
 			$j=0;
-			//primera vez que entra para poner los nombres de los campos
-			$bandera = true;			
+			$bandera = true;
 			foreach($data as $i=>$item)
 			{				
 				$data=$this->viewData;
 				$data['index']=$i;
 				$data['data']=$item;
 				$data['widget']=$this;
-				//Aquí pusimos la bandera para asegurarnos que entre solo una vez
 				if ($bandera == true){
 					$owner->$render($this->headersview,$data);
 					$bandera = false;
@@ -255,7 +250,8 @@ class CListView extends CBaseListView
 		}
 		else
 			$this->renderEmptyText();
-		echo CHtml::closeTag($this->itemsTagName);
+		echo CHtml::closeTag($this->itemsTagName);	
+		
 	}
 
 	/**
