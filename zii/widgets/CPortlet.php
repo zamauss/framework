@@ -41,7 +41,7 @@ class CPortlet extends CWidget
 	/**
 	 * @var array the HTML attributes for the portlet container tag.
 	 */
-	public $htmlOptions=array('class'=>'span4');
+	public $htmlOptions=array('class'=>'portlet');
 	/**
 	 * @var string the title of the portlet. Defaults to null.
 	 * When this is not set, Decoration will not be displayed.
@@ -77,8 +77,12 @@ class CPortlet extends CWidget
 	{
 		ob_start();
 		ob_implicit_flush(false);
-		echo "<div class='span4'>";
+
+		$this->htmlOptions['id']=$this->getId();
+		echo CHtml::openTag($this->tagName,$this->htmlOptions)."\n";
 		$this->renderDecoration();
+		echo "<div class=\"{$this->contentCssClass}\">\n";
+
 		$this->_openTag=ob_get_contents();
 		ob_clean();
 	}
@@ -106,9 +110,9 @@ class CPortlet extends CWidget
 	{
 		if($this->title!==null)
 		{
-			echo "<h4>";
-			echo $this->title;
-			echo "</h4>";
+			echo "<div class=\"{$this->decorationCssClass}\">\n";
+			echo "<div class=\"{$this->titleCssClass}\">{$this->title}</div>\n";
+			echo "</div>\n";
 		}
 	}
 

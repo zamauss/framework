@@ -32,7 +32,7 @@ class CCodeForm extends CActiveForm
 		echo <<<EOD
 <div class="form gii">
 	<p class="note">
-		Campos con <span class="required">*</span> son requeridos.
+		Fields with <span class="required">*</span> are required.
 		Click on the <span class="sticky">highlighted fields</span> to edit them.
 	</p>
 EOD;

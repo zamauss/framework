@@ -69,8 +69,6 @@ class CListView extends CBaseListView
 	 * <li><code>$widget</code>: refers to this list view widget instance.</li>
 	 * </ul>
 	 */
-	//INVENTADA
-	public $headersview;
 	public $itemView;
 	/**
 	 * @var string the HTML code to be displayed between any two consecutive items.
@@ -173,7 +171,10 @@ class CListView extends CBaseListView
 		if($this->itemView===null)
 			throw new CException(Yii::t('zii','The property "itemView" cannot be empty.'));
 		parent::init();
-		
+
+		if(!isset($this->htmlOptions['class']))
+			$this->htmlOptions['class']='list-view';
+
 		if($this->baseScriptUrl===null)
 			$this->baseScriptUrl=Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('zii.widgets.assets')).'/listview';
 
@@ -225,24 +226,19 @@ class CListView extends CBaseListView
 	 */
 	public function renderItems()
 	{
-		//echo CHtml::openTag($this->itemsTagName,array('class'=>$this->itemsCssClass))."\n";
+		echo CHtml::openTag($this->itemsTagName,array('class'=>$this->itemsCssClass))."\n";
 		$data=$this->dataProvider->getData();
 		if(($n=count($data))>0)
 		{
-			$owner=$this->getOwner();			
-			$render=$owner instanceof CController ? 'renderPartial' : 'render';			
+			$owner=$this->getOwner();
+			$render=$owner instanceof CController ? 'renderPartial' : 'render';
 			$j=0;
-			$bandera = true;
 			foreach($data as $i=>$item)
-			{				
+			{
 				$data=$this->viewData;
 				$data['index']=$i;
 				$data['data']=$item;
 				$data['widget']=$this;
-				if ($bandera == true){
-					$owner->$render($this->headersview,$data);
-					$bandera = false;
-				}
 				$owner->$render($this->itemView,$data);
 				if($j++ < $n-1)
 					echo $this->separator;
@@ -250,8 +246,7 @@ class CListView extends CBaseListView
 		}
 		else
 			$this->renderEmptyText();
-		echo CHtml::closeTag($this->itemsTagName);	
-		
+		echo CHtml::closeTag($this->itemsTagName);
 	}
 
 	/**

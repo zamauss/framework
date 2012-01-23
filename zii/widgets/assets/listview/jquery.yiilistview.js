@@ -33,7 +33,7 @@
 			if(settings.ajaxUpdate.length > 0) {
 				$(settings.updateSelector).die('click').live('click',function(){
 					$.fn.yiiListView.update(id, {url: $(this).attr('href')});
-							return false;
+					return false;
 				});
 			}
 		});

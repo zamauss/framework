@@ -68,7 +68,6 @@ class CMenu extends CWidget
 	 * </ul>
 	 */
 	public $items=array();
-	public $modoopcion = false;
 	/**
 	 * @var string the template used to render an individual menu item. In this template,
 	 * the token "{menu}" will be replaced with the corresponding menu link or text.
@@ -140,7 +139,7 @@ class CMenu extends CWidget
 	 */
 	public function init()
 	{
-		//$this->htmlOptions['id']=$this->getId();
+		$this->htmlOptions['id']=$this->getId();
 		$route=$this->getController()->getRoute();
 		$this->items=$this->normalizeItems($this->items,$route,$hasActiveChild);
 	}
@@ -162,10 +161,9 @@ class CMenu extends CWidget
 	{
 		if(count($items))
 		{
-		
 			echo CHtml::openTag('ul',$this->htmlOptions)."\n";
-			$this->renderMenuRecursive($items);			
-			echo CHtml::closeTag('ul');			
+			$this->renderMenuRecursive($items);
+			echo CHtml::closeTag('ul');
 		}
 	}
 
@@ -195,13 +193,8 @@ class CMenu extends CWidget
 				else
 					$options['class'].=' '.implode(' ',$class);
 			}
-			if ($this->modoopcion == true){
-				echo CHtml::openTag('li class="label warning" style="padding:5px"', $options);				
-			}
-			else{
-				echo CHtml::openTag('li', $options);
-			}
-			
+
+			echo CHtml::openTag('li', $options);
 
 			$menu=$this->renderMenuItem($item);
 			if(isset($this->itemTemplate) || isset($item['template']))
@@ -239,7 +232,6 @@ class CMenu extends CWidget
 		}
 		else
 			return CHtml::tag('span',isset($item['linkOptions']) ? $item['linkOptions'] : array(), $item['label']);
-			
 	}
 
 	/**

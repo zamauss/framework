@@ -20,7 +20,6 @@
  */
 abstract class CBaseListView extends CWidget
 {
-	public $contador = 0;
 	/**
 	 * @var IDataProvider the data provider for the view.
 	 */
@@ -58,7 +57,7 @@ abstract class CBaseListView extends CWidget
 	 * These tokens are recognized: {summary}, {items} and {pager}. They will be replaced with the
 	 * summary text, the items, and the pager.
 	 */
-	public $template="{pager}\n{summary}\n{items}";
+	public $template="{summary}\n{items}\n{pager}";
 	/**
 	 * @var string the summary text template for the view. These tokens are recognized and will be replaced
 	 * with the corresponding values:
@@ -82,7 +81,7 @@ abstract class CBaseListView extends CWidget
 	/**
 	 * @var string the CSS class name for the summary text container. Defaults to 'summary'.
 	 */
-	public $summaryCssClass='label';
+	public $summaryCssClass='summary';
 	/**
 	 * @var string the CSS class name for the pager container. Defaults to 'pager'.
 	 */
@@ -137,7 +136,7 @@ abstract class CBaseListView extends CWidget
 	 * The rendering results will replace the corresponding placeholders in {@link template}.
 	 */
 	public function renderContent()
-	{	
+	{
 		ob_start();
 		echo preg_replace_callback("/{(\w+)}/",array($this,'renderSection'),$this->template);
 		ob_end_flush();
@@ -151,8 +150,6 @@ abstract class CBaseListView extends CWidget
 	 * while $matches[1] contains the name of the matched placeholder.
 	 * @return string the rendering result of the section
 	 */
-	
-	//impresion echo "<pre>"; print_r($pager['pages']); echo "</pre>";
 	protected function renderSection($matches)
 	{
 		$method='render'.$matches[1];
@@ -172,7 +169,7 @@ abstract class CBaseListView extends CWidget
 	 */
 	public function renderEmptyText()
 	{
-		$emptyText=$this->emptyText===null ? Yii::t('zii','No se encontraron elementos.') : $this->emptyText;
+		$emptyText=$this->emptyText===null ? Yii::t('zii','No results found.') : $this->emptyText;
 		echo CHtml::tag('span', array('class'=>'empty'), $emptyText);
 	}
 
@@ -203,7 +200,7 @@ abstract class CBaseListView extends CWidget
 		if($this->enablePagination)
 		{
 			if(($summaryText=$this->summaryText)===null)
-				$summaryText=Yii::t('zii','Mostrando del {start}-{end} de {count} elemento(s).');
+				$summaryText=Yii::t('zii','Displaying {start}-{end} of {count} result(s).');
 			$pagination=$this->dataProvider->getPagination();
 			$total=$this->dataProvider->getTotalItemCount();
 			$start=$pagination->currentPage*$pagination->pageSize+1;
@@ -232,7 +229,7 @@ abstract class CBaseListView extends CWidget
 				'{page}'=>1,
 				'{pages}'=>1,
 			));
-		}		
+		}
 		echo '</div>';
 	}
 
