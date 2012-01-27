@@ -124,6 +124,7 @@ class GiiModule extends CWebModule
 				'loginUrl'=>Yii::app()->createUrl('gii/default/login'),
 			),
 		), false);
+
 		$this->generatorPaths[]='gii.generators';
 		$this->controllerMap=$this->findGenerators();
 	}
@@ -201,9 +202,16 @@ class GiiModule extends CWebModule
 		for($i=$n-1;$i>=0;--$i)
 		{
 			$alias=$this->generatorPaths[$i];
+
 			$path=Yii::getPathOfAlias($alias);
+
 			if($path===false || !is_dir($path))
+			{
+				echo "<pre>".print_r(!is_dir($path))."</pre>";
+				echo "<br/>";
+				echo "<pre>  " . print_r($path) ."  s</pre>";
 				continue;
+			}
 
 			$names=scandir($path);
 			foreach($names as $name)
